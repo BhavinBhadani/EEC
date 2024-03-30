@@ -7,8 +7,14 @@
 
 import Foundation
 
-struct VehicleDetails {
-    let totalVehicles: Int
-    let maxCarriableCapacity: Int
-    let maxSpeed: Int
+public struct VehicleDetails {
+    public let totalVehicles: Int
+    public let maxCarriableCapacity: Int
+    public let maxSpeed: Int
+    
+    public init(totalVehicles: Int, maxCarriableCapacity: Int, maxSpeed: Int) {
+        self.totalVehicles = totalVehicles
+        self.maxCarriableCapacity = maxCarriableCapacity
+        self.maxSpeed = maxSpeed
+    }
 }

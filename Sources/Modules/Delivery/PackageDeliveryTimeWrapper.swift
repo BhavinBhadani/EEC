@@ -6,10 +6,12 @@
 //
 
 import Foundation
+import Models
+import Utils
 
-struct PackageDeliveryTimeWrapper {
+public enum PackageDeliveryTimeWrapper {
     
-    static func getAllPackageDeliveryTime() {
+    public static func getAllPackageDeliveryTime() {
         do {
             let packageInfo = try DeliveryInputs.askBasicNumbersForPackages()
             var packageList: [PackageDetails] = []

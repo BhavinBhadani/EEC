@@ -7,9 +7,16 @@
 
 import Foundation
 
-struct PackageDeliveryTime {
-    let packageId: String
-    let discount: Int?
-    let deliveryCost: Int?
-    let duration: Double?
+public struct PackageDeliveryTime {
+    public let packageId: String
+    public let discount: Int?
+    public let deliveryCost: Int?
+    public let duration: Double?
+    
+    public init(packageId: String, discount: Int?, deliveryCost: Int?, duration: Double?) {
+        self.packageId = packageId
+        self.discount = discount
+        self.deliveryCost = deliveryCost
+        self.duration = duration
+    }
 }

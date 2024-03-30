@@ -7,9 +7,9 @@
 
 import Foundation
 
-final class Utility {
+public enum Utility {
     
-    class func printTable(from data: [[String]]) {
+    public static func printTable(from data: [[String]]) {
         if data.isEmpty { return }
         
         let headerColors = Array(repeating: "\u{001B}[0;36m", count: data[0].count)
@@ -45,10 +45,10 @@ final class Utility {
     
 }
 
-func isBetween<T: Comparable>(_ value: T, _ min: T, _ max: T) -> Bool {
+public func isBetween<T: Comparable>(_ value: T, _ min: T, _ max: T) -> Bool {
     return value >= min && value <= max
 }
 
-func * (lhs: String, rhs: Int) -> String {
+public func * (lhs: String, rhs: Int) -> String {
     return String(repeating: lhs, count: rhs)
 }

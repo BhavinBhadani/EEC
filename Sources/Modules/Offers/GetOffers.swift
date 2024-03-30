@@ -6,12 +6,14 @@
 //
 
 import Foundation
+import Models
+import Utils
 
-struct GetOffers {
+public enum GetOffers {
     
-    static func readOfferCodesFromFile() -> [String: Offer]? {
+    public static func readOfferCodesFromFile() -> [String: Offer]? {
         let bundle = Bundle.module
-        guard let fileURL = bundle.url(forResource: "offers", withExtension: "json") else {
+        guard let fileURL = bundle.url(forResource: "Resources/offers", withExtension: "json") else {
             print("Error: Unable to locate offers.json")
             return nil
         }
@@ -27,7 +29,7 @@ struct GetOffers {
         }
     }
     
-    static func allOfferCodes() {
+    public static func allOfferCodes() {
         guard let offers = readOfferCodesFromFile() else {
             return
         }

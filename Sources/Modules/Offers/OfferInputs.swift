@@ -6,6 +6,8 @@
 //
 
 import Foundation
+import Models
+import Utils
 
 struct OfferInputs {
     

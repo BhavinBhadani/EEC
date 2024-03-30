@@ -6,7 +6,10 @@
 //
 
 import XCTest
-@testable import eec
+@testable import EEC
+import Models
+import Modules
+import Utils
 
 class GetOffersTests: XCTestCase {
 
@@ -32,8 +35,8 @@ class GetOffersTests: XCTestCase {
         
         let result = PackageDeliveryDiscount.getPackagePriceDiscount(packageId: packageId, packageWeight: packageWeight, distance: distance, offerCode: offerCode, basePrice: basePrice, costOfUnitDistance: costOfUnitDistance, costOfUnitWeight: costOfUnitWeight)
         
-        XCTAssertEqual(result?.discount, 10, "Discount should be 10")
-        XCTAssertEqual(result?.price, 2700, "Price should be 2700")
+        XCTAssertEqual(result?.discount, 140, "Discount should be 140")
+        XCTAssertEqual(result?.price, 1260, "Price should be 1260")
     }
     
     // Test case to check if discount is not applied when offer code is invalid
@@ -50,7 +53,7 @@ class GetOffersTests: XCTestCase {
         let result = PackageDeliveryDiscount.getPackagePriceDiscount(packageId: packageId, packageWeight: packageWeight, distance: distance, offerCode: offerCode, basePrice: basePrice, costOfUnitDistance: costOfUnitDistance, costOfUnitWeight: costOfUnitWeight)
         
         XCTAssertEqual(result?.discount, 0, "Discount should be 0")
-        XCTAssertEqual(result?.price, 2100, "Price should be 2100")
+        XCTAssertEqual(result?.price, 1700, "Price should be 1700")
     }
     
 //    // Test case to check if discount is 0

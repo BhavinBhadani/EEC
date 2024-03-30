@@ -8,23 +8,35 @@ let package = Package(
     products: [
         .executable(
             name: "eec",
-            targets: ["eec"]
+            targets: ["EEC"]
         )
     ],
     dependencies: [
         .package(url: "https://github.com/apple/swift-argument-parser", from: "1.3.0"),
     ],
     targets: [
+        .target(name: "Utils"),
+        .target(name: "Models"),
+        .target(
+            name: "Modules",
+            dependencies: [
+                "Models",
+                "Utils"
+            ],
+            resources: [.copy("Resources")]
+        ),
         .executableTarget(
-            name: "eec",
+            name: "EEC",
             dependencies: [
                 .product(name: "ArgumentParser", package: "swift-argument-parser"),
-            ],             
-            resources: [.copy("Resources")]
+                "Models",
+                "Modules",
+                "Utils",
+            ]
         ),
         .testTarget(
             name: "EECTests",
-            dependencies: ["eec"]
+            dependencies: ["EEC"]
         ),
     ]
 )

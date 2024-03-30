@@ -7,8 +7,14 @@
 
 import Foundation
 
-struct Offer: Codable {
-    let discount: Int
-    let distanceRange: DistanceRange
-    let weightRange: WeightRange
+public struct Offer: Codable {
+    public let discount: Int
+    public let distanceRange: DistanceRange
+    public let weightRange: WeightRange
+    
+    public init(discount: Int, distanceRange: DistanceRange, weightRange: WeightRange) {
+        self.discount = discount
+        self.distanceRange = distanceRange
+        self.weightRange = weightRange
+    }
 }

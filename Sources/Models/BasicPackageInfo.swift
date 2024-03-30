@@ -7,7 +7,12 @@
 
 import Foundation
 
-struct BasicPackageInfo {
-    let basePrice: Int
-    let packages: Int
+public struct BasicPackageInfo {
+    public let basePrice: Int
+    public let packages: Int
+    
+    public init(basePrice: Int, packages: Int) {
+        self.basePrice = basePrice
+        self.packages = packages
+    }
 }

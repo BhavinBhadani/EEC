@@ -8,31 +8,31 @@
 import Foundation
 
 extension String {
-    var green: String {
+    public var green: String {
         "\u{001B}[0;32m" + self + "\u{001B}[0m"
     }
     
-    var red: String {
+    public var red: String {
         "\u{001B}[0;31m" + self + "\u{001B}[0m"
     }
     
-    var yellow: String {
+    public var yellow: String {
         "\u{001B}[0;33m" + self + "\u{001B}[0m"
     }
     
-    var cyan: String {
+    public var cyan: String {
         "\u{001B}[0;36m" + self + "\u{001B}[0m"
     }
     
-    var purple: String {
+    public var purple: String {
         "\u{001B}[0;35m" + self + "\u{001B}[0m"
     }
     
-    var blue: String {
+    public var blue: String {
         "\u{001B}[0;34m" + self + "\u{001B}[0m"
     }
     
-    var grey: String {
+    public var grey: String {
         "\u{001B}[0;90m" + self + "\u{001B}[0m"
     }
 }

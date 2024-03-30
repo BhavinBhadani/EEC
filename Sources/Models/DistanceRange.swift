@@ -7,7 +7,12 @@
 
 import Foundation
 
-struct DistanceRange: Codable {
-    let min: Int
-    let max: Int
+public struct DistanceRange: Codable {
+    public let min: Int
+    public let max: Int
+    
+    public init(min: Int, max: Int) {
+        self.min = min
+        self.max = max
+    }
 }

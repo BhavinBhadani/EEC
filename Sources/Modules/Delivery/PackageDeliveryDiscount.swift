@@ -6,10 +6,11 @@
 //
 
 import Foundation
+import Utils
 
-struct PackageDeliveryDiscount {
+public enum PackageDeliveryDiscount {
     
-    static func getDeliveryPriceDiscount() {
+    public static func getDeliveryPriceDiscount() {
         do {
             let packageInfo = try DeliveryInputs.askBasicNumbersForPackages()
             
@@ -34,7 +35,7 @@ struct PackageDeliveryDiscount {
         }
     }
 
-    static func getPackagePriceDiscount(packageId: String, packageWeight: Int, distance: Int, offerCode: String?, basePrice: Int, costOfUnitDistance: Int = 5, costOfUnitWeight: Int = 10) -> (price: Int, discount: Int, pkgId: String)? {
+    public static func getPackagePriceDiscount(packageId: String, packageWeight: Int, distance: Int, offerCode: String?, basePrice: Int, costOfUnitDistance: Int = 5, costOfUnitWeight: Int = 10) -> (price: Int, discount: Int, pkgId: String)? {
         let weight = packageWeight
         let basePrice = basePrice
         let distance = distance

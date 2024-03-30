@@ -6,10 +6,11 @@
 //
 
 import Foundation
+import Models
 
-struct AddOffer {
+public enum AddOffer {
     
-    static func getNewOfferDetails() {
+    public static func getNewOfferDetails() {
         do {
             let offerDetails = try OfferInputs.askToAddOffer()
             
@@ -27,7 +28,7 @@ struct AddOffer {
         }
     }
 
-    static func addNewOfferCode(offerId: String, discount: Int, minWeight: Int, maxWeight: Int, minDistance: Int, maxDistance: Int) -> String {
+    public static func addNewOfferCode(offerId: String, discount: Int, minWeight: Int, maxWeight: Int, minDistance: Int, maxDistance: Int) -> String {
         let newOffer = Offer(
             discount: discount,
             distanceRange: DistanceRange(min: minDistance, max: maxDistance),
