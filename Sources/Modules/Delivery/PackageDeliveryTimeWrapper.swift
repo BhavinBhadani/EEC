@@ -9,7 +9,7 @@ import Foundation
 import Models
 import Utils
 
-public enum PackageDeliveryTimeWrapper {
+public struct PackageDeliveryTimeWrapper {
     
     public static func getAllPackageDeliveryTime() {
         do {
@@ -20,20 +20,25 @@ public enum PackageDeliveryTimeWrapper {
                 ["Package Id", "Package Discount", "Package Price", "Delivery Time"],
             ]
 
-            for i in 0..<packageInfo.packages {
-                print("Enter the details of package \(i + 1)")
-                
+            for _ in 0..<packageInfo.packages {
                 let deliveryCostDetails = try DeliveryInputs.askQuestionsForDeliveryCost()
-                packageList.append(PackageDetails(packageId: deliveryCostDetails.packageId, weight: deliveryCostDetails.packageWeight, distance: deliveryCostDetails.distance, offerCode: deliveryCostDetails.offerCode, index: i))
+                packageList.append(PackageDetails(packageId: deliveryCostDetails.packageId, weight: deliveryCostDetails.packageWeight, distance: deliveryCostDetails.distance, offerCode: deliveryCostDetails.offerCode))
             }
             
             let vehicleDetails = try DeliveryInputs.askVehicleDetails()
             
-            let packageDeliveryTimes = getPackageDeliveryTime(noOfPackages: packageInfo.packages, packageList: packageList, noOfVehicles: vehicleDetails.totalVehicles, maxSpeed: vehicleDetails.maxSpeed, maxCarriableCapacity: vehicleDetails.maxCarriableCapacity, basePrice: packageInfo.basePrice)
-            
-            for element in packageDeliveryTimes {
+            let packageDeliveryTimes = estimate(
+                noOfVehicles: vehicleDetails.totalVehicles,
+                maxSpeed: vehicleDetails.maxSpeed,
+                maxWeight: vehicleDetails.maxCarriableCapacity,
+                orders: packageList,
+                basePrice: packageInfo.basePrice
+            )
+                        
+            for element in packageDeliveryTimes.sorted(by: { $0.packageId < $1.packageId } ) {
                 if let duration = element.duration {
-                    tableOutput.append([element.packageId, "\(element.discount ?? 0)", "\(element.deliveryCost ?? 0)", "\(duration)"])
+                    let roundedDuration = String(format: "%.2f", duration)
+                    tableOutput.append([element.packageId, "\(element.discount ?? 0)", "\(element.deliveryCost ?? 0)", "\(roundedDuration)"])
                 }
             }
             
@@ -44,120 +49,62 @@ public enum PackageDeliveryTimeWrapper {
         }
     }
 
-    private static func getPackageDeliveryTime(noOfPackages: Int, packageList: [PackageDetails], noOfVehicles: Int, maxSpeed: Int, maxCarriableCapacity: Int, basePrice: Int) -> [PackageDeliveryTime] {
-        guard noOfPackages > 0, !packageList.isEmpty, maxSpeed > 0, noOfVehicles > 0, maxCarriableCapacity > 0 else {
-            return []
+    public static func estimate(noOfVehicles: Int, maxSpeed: Int, maxWeight: Int, orders: [PackageDetails], basePrice: Int) -> [PackageDeliveryTime] {
+        let orders = orders.sorted { $0.weight > $1.weight }
+        var shipments: [[PackageDetails]] = []
+
+        var counter = 0
+        while counter < orders.count {
+            var containerWeight = 0
+            var container: [PackageDetails] = []
+
+            for i in counter..<orders.count {
+                if containerWeight + orders[i].weight > maxWeight {
+                    fatalError("Package weight can't be more than max vehicle weight capacity")
+                    break
+                }
+                counter += 1
+                containerWeight += orders[i].weight
+                container.append(orders[i])
+            }
+            shipments.append(container)
         }
 
-        var vehicleAvailabilityArray = Array(repeating: Double(0), count: noOfVehicles)
-        var newUpdatedPackageList = packageList
-        var packagesWithDuration: [PackageDeliveryTime] = []
-        
-        while !newUpdatedPackageList.isEmpty {
-            let possibleShipmentList = getNextPossibleShipmentsList(packageList: newUpdatedPackageList, maxCarriableCapacity: maxCarriableCapacity)
-            let nextDelivery = getClosestShipment(possibleShipmentList: possibleShipmentList, packageList: packageList)
-            let nextAvailabeAt = vehicleAvailabilityArray.min() ?? 0
-            var durationForSingleTrip: Double = 0
-            
-            for element in nextDelivery {
-                let currentPackage = packageList[element]
-                let deliveryTime = Double(currentPackage.distance) / Double(maxSpeed)
-                
+        shipments.sort { $0.count > $1.count }
+
+        var vehicles = Array(repeating: Double(0), count: noOfVehicles)
+
+        var _orders: [PackageDeliveryTime] = []
+
+        for shipment in shipments {
+            vehicles.sort()
+            var maxTime: Double = 0
+            for order in shipment {
                 let packagePriceDiscount = PackageDeliveryDiscount.getPackagePriceDiscount(
-                    packageId: currentPackage.packageId,
-                    packageWeight: currentPackage.weight,
-                    distance: currentPackage.distance,
-                    offerCode: currentPackage.offerCode,
+                    packageId: order.packageId,
+                    packageWeight: order.weight,
+                    distance: order.distance,
+                    offerCode: order.offerCode,
                     basePrice: basePrice
                 )
                 
-                let calculatedTimeOfPkg = PackageDeliveryTime(
-                    packageId: currentPackage.packageId,
+                let timeForOrder = Double(order.distance) / Double(maxSpeed)
+                let eta = Double(vehicles[0]) + timeForOrder
+                let packageOrder = PackageDeliveryTime(
+                    packageId: order.packageId,
                     discount: packagePriceDiscount?.discount ?? 0,
                     deliveryCost: packagePriceDiscount?.price ?? 0,
-                    duration: Double(nextAvailabeAt) + deliveryTime
+                    duration: eta
                 )
-                
-                durationForSingleTrip = max(deliveryTime, durationForSingleTrip)
-                packagesWithDuration.append(calculatedTimeOfPkg)
-            }
-            
-            vehicleAvailabilityArray[vehicleAvailabilityArray.firstIndex(of: nextAvailabeAt)!] = nextAvailabeAt + 2 * durationForSingleTrip
-            
-            newUpdatedPackageList = newUpdatedPackageList.filter { package in
-                return !nextDelivery.contains(package.index)
-            }
-        }
-        
-        return packagesWithDuration
-    }
 
-    private static func getClosestShipment(possibleShipmentList: [[Int]], packageList: [PackageDetails]) -> [Int] {
-        if possibleShipmentList.count == 1 {
-            return possibleShipmentList[0]
-        }
-        
-        var distanceList: [Int] = []
-        
-        for element in possibleShipmentList {
-            var distance = 0
-            for ele in element {
-                distance = max(distance, packageList[ele].weight)
-            }
-            distanceList.append(distance)
-        }
-        
-        let minDistance = distanceList.min() ?? 0
-        guard let closestIndex = distanceList.firstIndex(of: minDistance) else {
-            return []
-        }
-        
-        let closestShipment = possibleShipmentList[closestIndex]
-        return closestShipment
-    }
-
-    private static func getNextPossibleShipmentsList(packageList: [PackageDetails], maxCarriableCapacity: Int) -> [[Int]] {
-        if packageList.isEmpty || maxCarriableCapacity <= 0 {
-            return []
-        }
-        
-        var possiblePackages: [[PackageDetails]] = []
-        var localHighestSum = 0
-        var possiblePackagesIndices: [[Int]] = []
-        
-        for i in 1 ..< (1 << packageList.count) {
-            var subset: [PackageDetails] = []
-            
-            for j in 0 ..< packageList.count {
-                if (i & (1 << j)) != 0 {
-                    subset.append(packageList[j])
+                if timeForOrder > Double(maxTime) {
+                    maxTime = timeForOrder
                 }
+                _orders.append(packageOrder)
             }
-            
-            var temp = 0
-            for element in subset {
-                temp += element.weight
-            }
-            
-            if temp <= maxCarriableCapacity && temp >= localHighestSum {
-                localHighestSum = temp
-                possiblePackages.append(subset)
-            }
+            vehicles[0] += 2 * maxTime
         }
-        
-        possiblePackages = possiblePackages.filter { element in
-            element.reduce(0, { $0 + $1.weight }) == localHighestSum
-        }
-        
-        possiblePackages.forEach { element in
-            var temp: [Int] = []
-            for ele in element {
-                temp.append(ele.index)
-            }
-            possiblePackagesIndices.append(temp)
-        }
-        
-        return possiblePackagesIndices
-    }
 
+        return _orders
+    }
 }

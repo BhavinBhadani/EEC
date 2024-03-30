@@ -8,7 +8,7 @@
 import Foundation
 import Utils
 
-public enum PackageDeliveryDiscount {
+public struct PackageDeliveryDiscount {
     
     public static func getDeliveryPriceDiscount() {
         do {

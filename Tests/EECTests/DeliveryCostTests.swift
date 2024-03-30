@@ -1,5 +1,5 @@
 //
-//  DeliveryCostTestCases.swift
+//  DeliveryCostTests.swift
 //
 //
 //  Created by Bhavin Bhadani on 22/03/24.
@@ -11,7 +11,7 @@ import Models
 import Modules
 import Utils
 
-class DeliveryCostTestCases: XCTestCase {
+final class DeliveryCostTests: XCTestCase {
 
     // Test case to verify if offer codes are successfully read from file
     func testReadOfferCodesFromFile() {
@@ -64,6 +64,7 @@ class DeliveryCostTestCases: XCTestCase {
     }
     
     // Test case to check if discount is not applied when offer code is invalid
+    // Base.delivery cost: 100 | Weight: 120kg | Distance: 80km | Offer code: "INVALID"
     func testNoDiscountApplied() {
         // Mock data with invalid offer code
         let packageId = "PKG2"
