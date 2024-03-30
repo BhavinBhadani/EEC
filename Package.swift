@@ -7,7 +7,7 @@ let package = Package(
     name: "eec",
     products: [
         .executable(
-            name: "eec",
+            name: "EEC",
             targets: ["EEC"]
         )
     ],
