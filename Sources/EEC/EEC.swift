@@ -41,7 +41,7 @@ struct EEC: ParsableCommand {
     
     // Help message
     static func helpMessage() {
-        print("Usage: ecc [option]")
+        print("Usage: EEC [option]")
         print("Options:")
         print("  --calculate-delivery-cost: Calculate delivery cost")
         print("  --calulate-delivery-time: Calculate delivery time")

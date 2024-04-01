@@ -60,7 +60,7 @@ public struct PackageDeliveryTimeWrapper {
 
             for i in counter..<orders.count {
                 if containerWeight + orders[i].weight > maxWeight {
-                    fatalError("Package weight can't be more than max vehicle weight capacity")
+                    //fatalError("Package weight can't be more than max vehicle weight capacity")
                     break
                 }
                 counter += 1

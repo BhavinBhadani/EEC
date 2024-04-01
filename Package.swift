@@ -36,7 +36,11 @@ let package = Package(
         ),
         .testTarget(
             name: "EECTests",
-            dependencies: ["EEC"]
+            dependencies: [
+                "Models",
+                "Modules",
+                "Utils",
+            ]
         ),
     ]
 )

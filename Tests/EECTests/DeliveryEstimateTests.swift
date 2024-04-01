@@ -6,10 +6,10 @@
 //
 
 import XCTest
-@testable import EEC
-import Models
-import Modules
-import Utils
+//@testable import EEC
+@testable import Models
+@testable import Modules
+@testable import Utils
 
 final class DeliveryEstimateTests: XCTestCase {
 
