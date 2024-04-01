@@ -24,7 +24,7 @@ final class DeliveryEstimateTests: XCTestCase {
             noOfVehicles: 2,
             maxSpeed: 70,
             maxWeight: 200,
-            orders: [orderA, orderB, orderC, orderD, orderE],
+            packages: [orderA, orderB, orderC, orderD, orderE],
             basePrice: 100
         )
         

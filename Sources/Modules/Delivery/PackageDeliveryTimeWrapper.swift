@@ -31,7 +31,7 @@ public struct PackageDeliveryTimeWrapper {
                 noOfVehicles: vehicleDetails.totalVehicles,
                 maxSpeed: vehicleDetails.maxSpeed,
                 maxWeight: vehicleDetails.maxCarriableCapacity,
-                orders: packageList,
+                packages: packageList,
                 basePrice: packageInfo.basePrice
             )
                         
@@ -49,23 +49,23 @@ public struct PackageDeliveryTimeWrapper {
         }
     }
 
-    public static func estimate(noOfVehicles: Int, maxSpeed: Int, maxWeight: Int, orders: [PackageDetails], basePrice: Int) -> [PackageDeliveryTime] {
-        let orders = orders.sorted { $0.weight > $1.weight }
+    public static func estimate(noOfVehicles: Int, maxSpeed: Int, maxWeight: Int, packages: [PackageDetails], basePrice: Int) -> [PackageDeliveryTime] {
+        let packages = packages.sorted { $0.weight > $1.weight }
         var shipments: [[PackageDetails]] = []
 
         var counter = 0
-        while counter < orders.count {
+        while counter < packages.count {
             var containerWeight = 0
             var container: [PackageDetails] = []
 
-            for i in counter..<orders.count {
-                if containerWeight + orders[i].weight > maxWeight {
+            for i in counter..<packages.count {
+                if containerWeight + packages[i].weight > maxWeight {
                     //fatalError("Package weight can't be more than max vehicle weight capacity")
                     break
                 }
                 counter += 1
-                containerWeight += orders[i].weight
-                container.append(orders[i])
+                containerWeight += packages[i].weight
+                container.append(packages[i])
             }
             shipments.append(container)
         }
@@ -74,7 +74,7 @@ public struct PackageDeliveryTimeWrapper {
 
         var vehicles = Array(repeating: Double(0), count: noOfVehicles)
 
-        var _orders: [PackageDeliveryTime] = []
+        var orders: [PackageDeliveryTime] = []
 
         for shipment in shipments {
             vehicles.sort()
@@ -100,11 +100,11 @@ public struct PackageDeliveryTimeWrapper {
                 if timeForOrder > Double(maxTime) {
                     maxTime = timeForOrder
                 }
-                _orders.append(packageOrder)
+                orders.append(packageOrder)
             }
             vehicles[0] += 2 * maxTime
         }
 
-        return _orders
+        return orders
     }
 }
