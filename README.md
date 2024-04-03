@@ -1,7 +1,7 @@
-Development environment:-
-OS: Mac OS 14.0
-Editor: XCode v15.1
-Swift 5.9
+##### Development environment:- <br />
+OS: Mac OS 14.0 <br />
+Editor: XCode v15.1 <br />
+Swift 5.9 <br />
 
 ##### _PROBLEMS TO SOLVE_
 
