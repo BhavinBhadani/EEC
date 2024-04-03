@@ -6,7 +6,6 @@
 //
 
 import XCTest
-//@testable import EEC
 @testable import Models
 @testable import Modules
 @testable import Utils
@@ -34,7 +33,15 @@ final class DeliveryCostTests: XCTestCase {
         let costOfUnitDistance = 5
         let costOfUnitWeight = 10
         
-        let result = PackageDeliveryDiscount.getPackagePriceDiscount(packageId: packageId, packageWeight: packageWeight, distance: distance, offerCode: offerCode, basePrice: basePrice, costOfUnitDistance: costOfUnitDistance, costOfUnitWeight: costOfUnitWeight)
+        let packageDiscount = PackageDiscount(packageId: packageId,
+                                              packageWeight: packageWeight,
+                                              distance: distance,
+                                              offerCode: offerCode,
+                                              basePrice: basePrice,
+                                              costOfUnitDistance: costOfUnitDistance,
+                                              costOfUnitWeight: costOfUnitWeight)
+
+        let result = packageDiscount.calculateDiscount()
         
         XCTAssertEqual(result?.discount, 0, "Discount should be 0")
         XCTAssertEqual(result?.price, 175, "Final cost after discount should be 175")
@@ -56,8 +63,16 @@ final class DeliveryCostTests: XCTestCase {
         let costOfUnitDistance = 5
         let costOfUnitWeight = 10
         
-        let result = PackageDeliveryDiscount.getPackagePriceDiscount(packageId: packageId, packageWeight: packageWeight, distance: distance, offerCode: offerCode, basePrice: basePrice, costOfUnitDistance: costOfUnitDistance, costOfUnitWeight: costOfUnitWeight)
-        
+        let packageDiscount = PackageDiscount(packageId: packageId,
+                                              packageWeight: packageWeight,
+                                              distance: distance,
+                                              offerCode: offerCode,
+                                              basePrice: basePrice,
+                                              costOfUnitDistance: costOfUnitDistance,
+                                              costOfUnitWeight: costOfUnitWeight)
+
+        let result = packageDiscount.calculateDiscount()
+
         XCTAssertEqual(result?.discount, 35, "Discount should be 35")
         XCTAssertEqual(result?.price, 665, "Final cost after discount should be 665")
         XCTAssertEqual((result?.price ?? 0) + (result?.discount ?? 0), 700, "Total cost should be 700")
@@ -75,8 +90,16 @@ final class DeliveryCostTests: XCTestCase {
         let costOfUnitDistance = 5
         let costOfUnitWeight = 10
         
-        let result = PackageDeliveryDiscount.getPackagePriceDiscount(packageId: packageId, packageWeight: packageWeight, distance: distance, offerCode: offerCode, basePrice: basePrice, costOfUnitDistance: costOfUnitDistance, costOfUnitWeight: costOfUnitWeight)
-        
+        let packageDiscount = PackageDiscount(packageId: packageId,
+                                              packageWeight: packageWeight,
+                                              distance: distance,
+                                              offerCode: offerCode,
+                                              basePrice: basePrice,
+                                              costOfUnitDistance: costOfUnitDistance,
+                                              costOfUnitWeight: costOfUnitWeight)
+
+        let result = packageDiscount.calculateDiscount()
+
         XCTAssertEqual(result?.discount, 0, "Discount should be 0")
         XCTAssertEqual(result?.price, 1700, "Price should be 1700")
     }

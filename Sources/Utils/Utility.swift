@@ -52,3 +52,14 @@ public func isBetween<T: Comparable>(_ value: T, _ min: T, _ max: T) -> Bool {
 public func * (lhs: String, rhs: Int) -> String {
     return String(repeating: lhs, count: rhs)
 }
+
+public enum InputError: Error {
+    case invalidValue(String)
+}
+
+public enum AddOfferError: Error, Equatable {
+    case invalidCode(String)
+    case fileNotFount(String)
+    case unableToWrite(String)
+    case invalidRange(String)
+}

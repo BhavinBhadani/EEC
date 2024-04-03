@@ -6,7 +6,6 @@
 //
 
 import XCTest
-//@testable import EEC
 @testable import Models
 @testable import Modules
 @testable import Utils
@@ -14,19 +13,21 @@ import XCTest
 final class DeliveryEstimateTests: XCTestCase {
 
     func testDeliveryEstimate() {
-        let orderA = PackageDetails(packageId: "PKG1", weight: 50, distance: 30, offerCode: "OFR001")
-        let orderB = PackageDetails(packageId: "PKG2", weight: 75, distance: 125, offerCode: "OFR008")
-        let orderC = PackageDetails(packageId: "PKG3", weight: 175, distance: 100, offerCode: "OFR003")
-        let orderD = PackageDetails(packageId: "PKG4", weight: 110, distance: 60, offerCode: "OFR002")
-        let orderE = PackageDetails(packageId: "PKG5", weight: 155, distance: 95, offerCode: "NA")
+        let basePrice = 100
+        let orderA = Package(packageId: "PKG1", basePrice: basePrice, weight: 50, distance: 30, offerCode: "OFR001")
+        let orderB = Package(packageId: "PKG2", basePrice: basePrice, weight: 75, distance: 125, offerCode: "OFR008")
+        let orderC = Package(packageId: "PKG3", basePrice: basePrice, weight: 175, distance: 100, offerCode: "OFR003")
+        let orderD = Package(packageId: "PKG4", basePrice: basePrice, weight: 110, distance: 60, offerCode: "OFR002")
+        let orderE = Package(packageId: "PKG5", basePrice: basePrice, weight: 155, distance: 95, offerCode: "NA")
                 
-        let estimated = PackageDeliveryTimeWrapper.estimate(
-            noOfVehicles: 2,
+        let packages = PackageDeliveryEstimate(
+            numberOfVehicles: 2,
             maxSpeed: 70,
             maxWeight: 200,
-            packages: [orderA, orderB, orderC, orderD, orderE],
-            basePrice: 100
+            packages: [orderA, orderB, orderC, orderD, orderE]
         )
+        
+        let estimated = packages.estimate()
         
         let orderAe = estimated.first { $0.packageId == "PKG1" }
         let orderBe = estimated.first { $0.packageId == "PKG2" }

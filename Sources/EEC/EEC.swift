@@ -27,7 +27,7 @@ struct EEC: ParsableCommand {
             PackageDeliveryDiscount.getDeliveryPriceDiscount()
         } else if calulateDeliveryTime {
             print("Calculating delivery time...".blue)
-            PackageDeliveryTimeWrapper.getAllPackageDeliveryTime()
+            PackageDeliveryTime.getAllPackageDeliveryTime()
         } else if getAllOfferCodes {
             print("Getting all existing offer codes...".blue)
             GetOffers.allOfferCodes()
