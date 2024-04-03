@@ -1,3 +1,7 @@
+Development environment:-
+OS: Mac OS 14.0
+Editor: XCode v15.1
+Swift 5.9
 
 ##### _PROBLEMS TO SOLVE_
 
@@ -19,8 +23,10 @@ Open the directory in XCode, make sure selected schema should be eec and selecte
 
 2. Though terminal
 - Go to the directory on terminal and use `swift test` to run test cases.
-- Use 4 different options to run different functions
- 1. swift run EEC --get-all-offer-codes
- 2. swift run EEC --add-new-offer-code
- 3. swift run EEC --calculate-delivery-cost
- 4. swift run EEC --calulate-delivery-time
+- Use 4 different options to run different function
+```
+    swift run EEC --get-all-offer-codes
+    swift run EEC --add-new-offer-code
+    swift run EEC --calculate-delivery-cost
+    swift run EEC --calulate-delivery-time
+```
